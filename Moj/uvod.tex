@@ -1,7 +1,7 @@
 \section{Uvod}
 
-\subsection{Commodore 1541}
-\textit{Commodore 1541} je čitač \textit{5.25"} flopi disketa korićenih u radu sa \textit{Commodore 64} računarima. Razvijen je u Kanadi od strane kompanije Commodore, 1982. godine \cite{Commodore1541Text}. Izgled ovog čitača prikazan je na slici \ref{img:commodore1541}.
+\subsection{\textit{Commodore 1541}, \textit{5.25" flopi disketa} i \textit{D64 fajl}}
+\textit{Commodore 1541} je čitač \textit{5.25"} flopi disketa korićenih u radu sa \textit{Commodore 64} računarima. Razvijen je u Kanadi od strane kompanije \textit{Commodore}, 1982. godine \cite{Commodore1541Text}. Izgled ovog čitača prikazan je na slici \ref{img:commodore1541}.
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[width=11cm]{img/Commodore1541.jpg}
@@ -10,7 +10,7 @@
 \end{center}
 \end{figure}
 
-Originalna \textit{5.25"} flopi disketa imala je 35 kružnih traka na kojima su bili raspoređeni sektori od po 256 bajta. Postojala je i verzija sa 40 traka. Trake su imale različit broj sektora i bile su raspoređene od spolja ka unutra, odnosno prva traka je bila bliža spoljašnjoj ivici i imala je najviše sektora, dok je 35 traka bila bliža unutrašnjem prstenu diskete sa najmanje sektora \cite{D64}. Broj sektora po trakama je prikazan u tabeli \ref{tab:sektor_traka}.
+Originalna \textit{5.25" flopi disketa} imala je 35 kružnih traka dok je postojala i verzija sa 40 traka na kojima su bili raspoređeni sektori od po 256 bajta. Trake su imale različit broj sektora i bile su raspoređene od spolja ka unutra, odnosno prva traka je bila bliža spoljašnjoj ivici i imala je najviše sektora, dok je poslednja traka bila bliža unutrašnjem prstenu diskete sa najmanje sektora \cite{D64}. Broj sektora po trakama je prikazan u tabeli \ref{tab:sektor_traka}.
 \begin{table}[h!]
 \begin{center}
 \begin{tabular}{ | c | c| c | c | } 
@@ -24,18 +24,21 @@ Traka & Sektori/traka & Ukupno Sektora & Skladište u bajtima \\
 \hline
 25-30 & 18 & 108 & 6300 \\
 \hline
-31-35(40) & 17 & 85 & 6020 \\
+31-35 & 17 & 85 & 6020 \\
 \hline
 \end{tabular}
 \end{center}
-\caption{Broj sektora po traci \textit{5.25"} flopi diskete}
+\caption{Broj sektora po traci originalne \textit{5.25" flopi diskete}}
 \label{tab:sektor_traka}
 \end{table}
 
-\subsection{D64 fajl}
-\textit{D64 fajl} je elektronska byte predstava \textit{5.25"} flopi diskete \textit{Commodore 64} računara. Standardni \textit{D64 file} ima 174848 bajtova, 683 sektora sa po 256 bajta i on oslikava originalnu \textit{5.25"} flopi disketu sa 35 traka.  Postoji i verzija ovog fajla sa 196608 bajtova,768 sektora sa po 256 bajta koja oslikava verziju \textit{5.25"} flopi diskete sa 40 traka \cite{D64}.
+Traka 18 predstavlja glavnu traku sa svojih 19 sektora. Nulti sektor ove trake čuva BAM(Block Availability Map) i ime flopi diskete dok ostali sektori sadrže podatke. BAM je struktura podataka koja prati koji sektori traka su slobodni a koji zauzeti. Sektor u kome je smesten BAM je formiran po posebnom šablonu. BAM za prvu traku smešten je od 4-7 bajta nultog sektora. Gde prvi bajt govori ukupan broj slobodnih sektora, dok preostala tri govore koji sektori su slobodni a koji popunjeni. Svaka naredna 4 bajta predstavljaju BAM za narednu traku flopi diskete. 128 bajt čuva ime flopi diskete.
 
-Na kraju \textit{D64 fajla} mogu se naći error bajtovi, koji govore koji sektori imaju problem. Ukoliko se na kraju fajla ne pojave error bajtovi to znači da su svi sektori ispravni. Veličina fajlova u zavisnosti od error bajtova je prikazana u tabeli \ref{tab:error_velicina}.
+Prvi direktorijum je uvek 18/1 dok je sledeci na 18/4 ako koristimo pomeranje od 3, kod standardnih flopija koristi se pomeranje od 10 u tom slučaju sledeći je na 18/10 . Sektori su popunjeni po šablonu, prva dva bajta sektora govore o lokaciji sledece trake/sektora. Kada dođemo do kraja direktorijuma vrednost trake je 00.
+
+\textit{D64 fajl} je elektronska byte predstava \textit{5.25"flopi diskete} \textit{Commodore 64} računara. Standardni \textit{D64 file} ima 174848 bajtova, 683 sektora sa po 256 bajta i on oslikava originalnu \textit{5.25" flopi disketu} sa 35 traka.  Postoji i verzija ovog fajla sa 196608 bajtova,768 sektora sa po 256 bajta koja oslikava verziju \textit{5.25" flopi diskete} sa 40 traka \cite{D64}.
+
+Na kraju \textit{D64 fajla} mogu se naći dodatni bajtovi, koji govore koji sektori imaju grešku. Ukoliko se na kraju fajla ne pojave bajtovi to znači da su svi sektori ispravni. Veličina fajlova u zavisnosti od dodatnih bajtova je prikazana u tabeli \ref{tab:error_velicina}.
 \begin{table}[h!]
 \begin{center}
 \begin{tabular}{ | c | c |} 
@@ -53,6 +56,6 @@ Tip diskete & Veličina(bajt) \\
 \hline
 \end{tabular}
 \end{center}
-\caption{Veličina fajla u zavisnosti od error bajtova}
+\caption{Veličina fajla u zavisnosti od dodatnih bajtova}
 \label{tab:error_velicina}
 \end{table}
