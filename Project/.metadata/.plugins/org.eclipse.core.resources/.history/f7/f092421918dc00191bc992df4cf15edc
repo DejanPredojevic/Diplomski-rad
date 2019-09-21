@@ -738,6 +738,7 @@ public class MainWindow extends JFrame implements java.util.Observer{
 				info.updateUI();
 				info.repaint();
 				info.revalidate();
+				right.add(new JLabel("Da vidim samo"));
 				right.updateUI();
 				right.repaint();
 				right.revalidate();
