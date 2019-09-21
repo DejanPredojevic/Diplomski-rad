@@ -113,33 +113,7 @@ public class MainWindow extends JFrame implements java.util.Observer{
 		left.add(Box.createVerticalStrut(10));
 		left.add(buttons);
 		left.add(Box.createVerticalStrut(20)); 
-		JPanel legenda = new JPanel();
-		legenda.setLayout(new BoxLayout(legenda, BoxLayout.X_AXIS));
-		BufferedImage myPicture = null;
-		try {
-			myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaZelena.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-		Border blackline = BorderFactory.createLineBorder(Color.black);
-		picLabel.setBorder(blackline);
-		legenda.add(picLabel);
-		legenda.add(new JLabel("  - OK  "));
-		try {
-			myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaCrvena.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		picLabel = new JLabel(new ImageIcon(myPicture));
-		blackline = BorderFactory.createLineBorder(Color.black);
-		picLabel.setBorder(blackline);
-		legenda.add(picLabel);
-		legenda.add(new JLabel("  - ERROR  "));
 		
-		left.add(legenda);
 		//pregled fajlova
 		pregled = new JPanel();
 		pregled.setLayout(new BoxLayout(pregled, BoxLayout.Y_AXIS));
@@ -185,7 +159,23 @@ public class MainWindow extends JFrame implements java.util.Observer{
 		p.setBorder(null);*/
 		pregled.add(fajls);
 		left.add(pregled);
+		JPanel legenda = new JPanel();
+		legenda.setLayout(new BoxLayout(legenda, BoxLayout.X_AXIS));
+		BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaZelena.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+		Border blackline = BorderFactory.createLineBorder(Color.black);
+		picLabel.setBorder(blackline);
+		legenda.add(picLabel);
+		legenda.add(new JLabel(" -OK"));
+		left.setVisible(true);
 		
+		left.add(legenda);
 		left.setVisible(true);
 		return left;
 	}

@@ -113,6 +113,7 @@ public class MainWindow extends JFrame implements java.util.Observer{
 		left.add(Box.createVerticalStrut(10));
 		left.add(buttons);
 		left.add(Box.createVerticalStrut(20)); 
+		left.add(pregled);
 		JPanel legenda = new JPanel();
 		legenda.setLayout(new BoxLayout(legenda, BoxLayout.X_AXIS));
 		BufferedImage myPicture = null;
@@ -184,7 +185,6 @@ public class MainWindow extends JFrame implements java.util.Observer{
 		p.setPreferredSize(new Dimension(220,450));
 		p.setBorder(null);*/
 		pregled.add(fajls);
-		left.add(pregled);
 		
 		left.setVisible(true);
 		return left;
