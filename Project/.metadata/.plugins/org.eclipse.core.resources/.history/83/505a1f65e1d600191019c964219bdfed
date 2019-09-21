@@ -1,0 +1,18 @@
+package model;
+
+import java.util.Observable;
+
+public class File extends Observable{
+	
+	java.io.File file = null;
+
+	public java.io.File getFile() {
+		return file;
+	}
+
+	public void setFile(java.io.File file) {
+		this.file = file;
+		setChanged();
+        notifyObservers(this.file);
+	}
+}

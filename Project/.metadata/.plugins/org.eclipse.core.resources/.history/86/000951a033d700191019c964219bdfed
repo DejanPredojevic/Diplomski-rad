@@ -1,0 +1,42 @@
+package model;
+
+import java.io.File;
+import java.util.Observable;
+
+public class Files extends Observable{
+	
+	File[] files = null;
+	File selected = null;
+	File[] compare = null;
+
+	public File[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(File[] files) {
+		this.files = files;
+		setChanged();
+        notifyObservers("FAJLOVI");
+	}
+
+	public File getSelected() {
+		return selected;
+	}
+
+	public void setSelected(File selected) {
+		this.selected = selected;
+		setChanged();
+        notifyObservers("FAJL");
+	}
+	
+	public File[] getCompare() {
+		return compare;
+	}
+
+	public void setCompare(File compare) {
+		this.compare = compare;
+		setChanged();
+        notifyObservers("COMPARE");
+	}
+	
+}

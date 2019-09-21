@@ -1,0 +1,1286 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Observable;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
+import controller.FileChooser;
+import controller.FileCompare;
+import controller.FileFix;
+import controller.FileRefresh;
+import controller.FileSave;
+import controller.FileShow;
+import util.Singleton;
+
+public class MainWindow extends JFrame implements java.util.Observer{
+	
+	// TODO Fizuelni bug kod selektovanja scrol panel se skuplja ...
+	// winvice instalirati...
+	// Ponedeljak 12:15
+	
+	private static final long serialVersionUID = 1L;
+	private JPanel left;
+	private JButton select;
+	private JButton save;
+	private JButton fix;
+	private JButton refresh;
+	private JPanel buttons;
+	private JPanel pregled;
+	private JPanel right;
+	private JPanel fajls;
+	private JPanel info;
+	float[] f = Color.RGBtoHSB(183, 200, 241, null);
+	
+	public MainWindow() {
+		//main window podesavanja
+		setTitle("JavaD64Fix v1.1.1");
+		setMinimumSize(new Dimension(650,750));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		//setResizable(false);
+		
+		//Levi panel(dugmad i pregled fajlova)
+		left = LeftPanel();
+		left.setBorder(new EmptyBorder(10, 10, 10, 10));
+		add(left,BorderLayout.WEST);
+		
+		//desni panel(prikaz po blokovima svakog fajla)
+		right = RightPanel();
+		right.setBorder(new EmptyBorder(10, 10, 10, 10));
+		add(right,BorderLayout.CENTER);
+		
+		info = new JPanel();
+		
+		Border blackline = BorderFactory.createLineBorder(Color.black);
+		info.setBorder(blackline);
+		info.add(new JLabel("Welcome to JavaD64Fix."));
+		add(info,BorderLayout.SOUTH);
+		
+		setVisible(true);
+		pack();
+	}
+
+	//LEVI PANEL
+	private JPanel LeftPanel() {
+		left = new JPanel();
+		left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+		left.setMaximumSize(new Dimension(225,getHeight()));
+		left.setMinimumSize(new Dimension(225,getHeight()));
+		left.setPreferredSize(new Dimension(225,getHeight()));
+		//dugmad
+		select = new JButton("Select D64");
+		select.addActionListener(new FileChooser());
+		save = new JButton("Save D64");
+		save.addActionListener(new FileSave());
+		GridLayout grid = new GridLayout(4,1,10,10);
+		fix = new JButton("Fix selected D64");
+		fix.addActionListener(new FileFix());
+		refresh = new JButton("Refresh");
+		refresh.addActionListener(new FileRefresh());
+		buttons = new JPanel();
+		buttons.setMaximumSize(new Dimension(225,160));
+		buttons.setMinimumSize(new Dimension(225,160));
+		buttons.setPreferredSize(new Dimension(225,160));
+		buttons.setLayout(grid);
+		buttons.add(select);
+		buttons.add(fix);
+		buttons.add(save);
+		buttons.add(refresh);
+		left.add(Box.createVerticalStrut(10));
+		left.add(buttons);
+		left.add(Box.createVerticalStrut(20)); 
+		
+		//pregled fajlova
+		pregled = new JPanel();
+		pregled.setLayout(new BoxLayout(pregled, BoxLayout.Y_AXIS));
+		pregled.setSize(new Dimension());
+		pregled.setMaximumSize(new Dimension(225,500));
+		pregled.setMinimumSize(new Dimension(225,500));
+		pregled.setPreferredSize(new Dimension(225,500));
+		
+		JPanel label = new JPanel();
+		label.setMaximumSize(new Dimension(225,35));
+		label.setMinimumSize(new Dimension(225,35));
+		label.setPreferredSize(new Dimension(225,35));
+		JLabel show = new JLabel("Sh");
+		show.setMaximumSize(new Dimension(30,35));
+		show.setPreferredSize(new Dimension(30,35));
+		show.setHorizontalAlignment(JLabel.CENTER);
+		JLabel compare = new JLabel("Cm");
+		compare.setMaximumSize(new Dimension(30,35));
+		compare.setPreferredSize(new Dimension(30,35));
+		compare.setHorizontalAlignment(JLabel.CENTER);
+		JLabel name = new JLabel("D64 image");
+		name.setMaximumSize(new Dimension(100,35));
+		name.setPreferredSize(new Dimension(100,35));
+		name.setHorizontalAlignment(JLabel.CENTER);
+		show.setFont(new Font("Serif", Font.PLAIN, 21));
+		compare.setFont(new Font("Serif", Font.PLAIN, 21));
+		name.setFont(new Font("Serif", Font.PLAIN, 21));
+		label.add(show);
+		label.add(compare);
+		label.add(name);
+		pregled.add(label);
+		fajls = new JPanel();
+		fajls.setLayout(new BoxLayout(fajls, BoxLayout.Y_AXIS));
+		fajls.setPreferredSize(new Dimension(225,450));
+		/*JScrollPane p = new JScrollPane();
+		p.setViewportView(fajls);
+		p.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		p.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		p.setWheelScrollingEnabled(true);
+		p.setPreferredSize(new Dimension(220,450));
+		p.setMinimumSize(new Dimension(220,450));
+		p.setPreferredSize(new Dimension(220,450));
+		p.setBorder(null);*/
+		pregled.add(fajls);
+		left.add(pregled);
+		left.setVisible(true);
+		return left;
+	}
+	
+	private JPanel RightPanel() {
+		right = new JPanel();
+		GridBagLayout gridBag = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
+		right.setLayout(gridBag);
+		int j = 0,k = 0;
+		for(int i=0 ; i < 683 ; i++) {
+			if(i > 20) {
+				if(i < 357) {
+					j++;
+					if(i % 21 == 0) {
+						k++;
+						j=0;
+						c.gridx = j;
+						c.gridy = k;
+						JLabel l = new JLabel(Integer.toString(k+1));
+						right.add(l, c);
+						j++;
+					}
+				}else if(i == 357){
+					k++;
+					j=0;
+					c.gridx = j;
+					c.gridy = k;
+					JLabel l = new JLabel(Integer.toString(k+1));
+					right.add(l, c);
+					j++;
+				}else if(i > 357 && i < 490){
+					j++;
+					if((i-357) % 19 == 0) {
+						k++;
+						j=0;
+						c.gridx = j;
+						c.gridy = k;
+						JLabel l = new JLabel(Integer.toString(k+1));
+						right.add(l, c);
+						j++;
+					}
+				}else if(i == 490){
+					k++;
+					j=0;
+					c.gridx = j;
+					c.gridy = k;
+					JLabel l = new JLabel(Integer.toString(k+1));
+					right.add(l, c);
+					j++;
+				}else if(i > 490 && i < 598){
+					j++;
+					if((i-490) % 18 == 0) {
+						k++;
+						j=0;
+						c.gridx = j;
+						c.gridy = k;
+						JLabel l = new JLabel(Integer.toString(k+1));
+						right.add(l, c);
+						j++;
+					}
+				}else if(i == 598){
+					k++;
+					j=0;
+					c.gridx = j;
+					c.gridy = k;
+					JLabel l = new JLabel(Integer.toString(k+1));
+					right.add(l, c);
+					j++;
+				}else if(i > 598){
+					j++;
+					if((i-598) % 17 == 0) {
+						k++;
+						j=0;
+						c.gridx = j;
+						c.gridy = k;
+						JLabel l = new JLabel(Integer.toString(k+1));
+						right.add(l, c);
+						j++;
+					}
+				}
+			}else{
+				c.gridx = j;
+				c.gridy = k;
+				JLabel l = new JLabel(Integer.toString(k+1));
+				right.add(l, c);
+				j++;
+			}
+			c.gridx = j;
+			c.gridy = k;
+			BufferedImage myPicture = null;
+			try {
+				myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaSiva.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+			Border blackline = BorderFactory.createLineBorder(Color.black);
+			picLabel.setBorder(blackline);
+			right.add(picLabel, c);
+			
+		}
+		
+		return right;
+	}
+
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		ButtonGroup bgroup = new ButtonGroup();
+		JPanel label = new JPanel();
+		label.setMaximumSize(new Dimension(225,35));
+		label.setPreferredSize(new Dimension(225,35));
+		left.add(label);
+		if(arg.equals("FAJLOVI")) {
+			fajls.removeAll();
+			for (File file : Singleton.getInstance().getFiles().getFiles()) {
+				JPanel fajl = new JPanel();
+				
+				fajl.setMaximumSize(new Dimension(225,35));
+				fajl.setMinimumSize(new Dimension(225,35));
+				fajl.setPreferredSize(new Dimension(225,35));
+				JRadioButton r = new JRadioButton();
+				r.setMinimumSize(new Dimension(40,35));
+				r.setPreferredSize(new Dimension(40,35));
+				r.addActionListener(new FileShow(file));
+				bgroup.add(r);
+				r.setHorizontalAlignment(JLabel.CENTER);
+				JCheckBox c = new JCheckBox();
+				c.setMinimumSize(new Dimension(30,35));
+				c.setPreferredSize(new Dimension(30,35));
+				c.addActionListener(new FileCompare(file));
+				c.setHorizontalAlignment(JLabel.CENTER);
+				JLabel l = new JLabel(file.getName());
+				l.setMinimumSize(new Dimension(120,35));
+				l.setPreferredSize(new Dimension(120,35));
+				fajl.add(r);
+				fajl.add(c,BorderLayout.WEST);
+				fajl.add(l);
+				fajls.add(fajl);
+				
+			}
+			fajls.updateUI();
+			fajls.repaint();
+			fajls.revalidate();
+		}else if(arg.equals("FAJL")) {
+			right.removeAll();
+			info.removeAll();
+			
+				GridBagLayout gridBag = new GridBagLayout();
+				GridBagConstraints c = new GridBagConstraints();
+				right.setLayout(gridBag);
+				int j = 0,k = 0;
+				byte[] fileContent = null;
+				try {
+					fileContent = Files.readAllBytes(Singleton.getInstance().getFiles().getSelected().toPath());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if(fileContent.length == 175531) {
+					int temp = 0;
+					for(int i=fileContent.length-683 ; i < fileContent.length ; i++) {
+						if(i > 174848) {
+							if(i < 175205) {
+								j++;
+								if((i-174848) % 21 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 175205){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 175205 && i < 175338){
+								j++;
+								if((i-175205) % 19 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 175338){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 175338 && i < 175446){
+								j++;
+								if((i-175338) % 18 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 175446){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 175446){
+								j++;
+								if((i-175446) % 17 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}
+						}else{
+							c.gridx = j;
+							c.gridy = k;
+							JLabel l = new JLabel(Integer.toString(k+1));
+							right.add(l, c);
+							j++;
+						}
+						c.gridx = j;
+						c.gridy = k;
+				        if(fileContent[i] == 1) {
+				        	
+				        	BufferedImage myPicture = null;
+							try {
+								myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaZelena.png"));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+							Border blackline = BorderFactory.createLineBorder(Color.black);
+							picLabel.setBorder(blackline);
+							right.add(picLabel, c);
+				        }else {
+				        	temp++;
+				        	BufferedImage myPicture = null;
+							try {
+								myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaCrvena.png"));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+							Border blackline = BorderFactory.createLineBorder(Color.black);
+							picLabel.setBorder(blackline);
+							right.add(picLabel, c);
+				        }
+				        
+				    }
+					
+					info.add(new JLabel("Blocks: 683 , Erors: "+ temp ));
+				}else if(fileContent.length == 197376) {
+					int temp = 0;
+					for(int i=fileContent.length-768 ; i > fileContent.length ; i++) {
+						if(i > 196608) {
+							if(i < 196965) {
+								j++;
+								if((i-196608) % 21 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 196965){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 196965 && i < 197098){
+								j++;
+								if((i-196965) % 19 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 197098){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 197098 && i < 197206){
+								j++;
+								if((i-197098) % 18 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 197206){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 197206){
+								j++;
+								if((i-197206) % 17 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}
+						}else{
+							c.gridx = j;
+							c.gridy = k;
+							JLabel l = new JLabel(Integer.toString(k+1));
+							right.add(l, c);
+							j++;
+						}
+						c.gridx = j;
+						c.gridy = k;
+				        if(fileContent[i] == 1) {
+				        	BufferedImage myPicture = null;
+							try {
+								myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaZelena.png"));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+							Border blackline = BorderFactory.createLineBorder(Color.black);
+							picLabel.setBorder(blackline);
+							right.add(picLabel, c);
+				        }else {
+				        	temp++;
+				        	BufferedImage myPicture = null;
+							try {
+								myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaCrvena.png"));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+							Border blackline = BorderFactory.createLineBorder(Color.black);
+							picLabel.setBorder(blackline);
+							right.add(picLabel, c);
+				        }
+				        
+				    }
+					info.add(new JLabel("Blocks: 768 , Erors: "+ temp ));
+				}else if(fileContent.length == 174848){
+					for(int i=0 ; i < 683 ; i++) {
+						if(i > 20) {
+							if(i < 357) {
+								j++;
+								if(i % 21 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 357){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 357 && i < 490){
+								j++;
+								if((i-357) % 19 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 490){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 490 && i < 598){
+								j++;
+								if((i-490) % 18 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 598){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 598){
+								j++;
+								if((i-598) % 17 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}
+						}else{
+							c.gridx = j;
+							c.gridy = k;
+							JLabel l = new JLabel(Integer.toString(k+1));
+							right.add(l, c);
+							j++;
+						}
+						c.gridx = j;
+						c.gridy = k;
+						BufferedImage myPicture = null;
+						try {
+							myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaZelena.png"));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+						Border blackline = BorderFactory.createLineBorder(Color.black);
+						picLabel.setBorder(blackline);
+						right.add(picLabel, c);
+						
+					}
+					info.add(new JLabel("Blocks: 683 , Erors: 0" ));
+				}else if(fileContent.length == 196608){
+					for(int i=0 ; i < 768 ; i++) {
+						if(i > 20) {
+							if(i < 357) {
+								j++;
+								if(i % 21 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 357){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 357 && i < 490){
+								j++;
+								if((i-357) % 19 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 490){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 490 && i < 598){
+								j++;
+								if((i-490) % 18 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 598){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 598){
+								j++;
+								if((i-598) % 17 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}
+						}else{
+							c.gridx = j;
+							c.gridy = k;
+							JLabel l = new JLabel(Integer.toString(k+1));
+							right.add(l, c);
+							j++;
+						}
+						c.gridx = j;
+						c.gridy = k;
+						BufferedImage myPicture = null;
+						try {
+							myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaZelena.png"));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+						Border blackline = BorderFactory.createLineBorder(Color.black);
+						picLabel.setBorder(blackline);
+						right.add(picLabel, c);
+					}
+					info.add(new JLabel("Blocks: 768 , Erors: 0" ));
+				}	
+				info.updateUI();
+				info.repaint();
+				info.revalidate();
+				right.updateUI();
+				right.repaint();
+				right.revalidate();
+			
+		}else if(arg.equals("FIX")){
+			right.removeAll();
+			info.removeAll();
+			if(Singleton.getInstance().getFiles().getNewFile() == null) {
+				GridBagLayout gridBag = new GridBagLayout();
+				GridBagConstraints c = new GridBagConstraints();
+				right.setLayout(gridBag);
+				int j = 0,k = 0;
+				for(int i=0 ; i < 683 ; i++) {
+					if(i > 20) {
+						if(i < 357) {
+							j++;
+							if(i % 21 == 0) {
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}
+						}else if(i == 357){
+							k++;
+							j=0;
+							c.gridx = j;
+							c.gridy = k;
+							JLabel l = new JLabel(Integer.toString(k+1));
+							right.add(l, c);
+							j++;
+						}else if(i > 357 && i < 490){
+							j++;
+							if((i-357) % 19 == 0) {
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}
+						}else if(i == 490){
+							k++;
+							j=0;
+							c.gridx = j;
+							c.gridy = k;
+							JLabel l = new JLabel(Integer.toString(k+1));
+							right.add(l, c);
+							j++;
+						}else if(i > 490 && i < 598){
+							j++;
+							if((i-490) % 18 == 0) {
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}
+						}else if(i == 598){
+							k++;
+							j=0;
+							c.gridx = j;
+							c.gridy = k;
+							JLabel l = new JLabel(Integer.toString(k+1));
+							right.add(l, c);
+							j++;
+						}else if(i > 598){
+							j++;
+							if((i-598) % 17 == 0) {
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}
+						}
+					}else{
+						c.gridx = j;
+						c.gridy = k;
+						JLabel l = new JLabel(Integer.toString(k+1));
+						right.add(l, c);
+						j++;
+					}
+					c.gridx = j;
+					c.gridy = k;
+					BufferedImage myPicture = null;
+					try {
+						myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaSiva.png"));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+					Border blackline = BorderFactory.createLineBorder(Color.black);
+					picLabel.setBorder(blackline);
+					right.add(picLabel, c);
+					
+				}
+			}else {
+				GridBagLayout gridBag = new GridBagLayout();
+				GridBagConstraints c = new GridBagConstraints();
+				right.setLayout(gridBag);
+				int j = 0,k = 0;
+				byte[] fileContent = Singleton.getInstance().getFiles().getNewFile();
+				if(fileContent.length == 175531) {
+					int temp = 0;
+					for(int i=fileContent.length-683 ; i < fileContent.length ; i++) {
+						if(i > 174848) {
+							if(i < 175205) {
+								j++;
+								if((i-174848) % 21 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 175205){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 175205 && i < 175338){
+								j++;
+								if((i-175205) % 19 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 175338){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 175338 && i < 175446){
+								j++;
+								if((i-175338) % 18 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 175446){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 175446){
+								j++;
+								if((i-175446) % 17 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}
+						}else{
+							c.gridx = j;
+							c.gridy = k;
+							JLabel l = new JLabel(Integer.toString(k+1));
+							right.add(l, c);
+							j++;
+						}
+						c.gridx = j;
+						c.gridy = k;
+				        if(fileContent[i] == 1) {
+				        	
+				        	BufferedImage myPicture = null;
+							try {
+								myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaZelena.png"));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+							Border blackline = BorderFactory.createLineBorder(Color.black);
+							picLabel.setBorder(blackline);
+							right.add(picLabel, c);
+				        }else {
+				        	temp++;
+				        	BufferedImage myPicture = null;
+							try {
+								myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaCrvena.png"));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+							Border blackline = BorderFactory.createLineBorder(Color.black);
+							picLabel.setBorder(blackline);
+							right.add(picLabel, c);
+				        }
+				        
+				    }
+					
+					info.add(new JLabel("Fix is done! Blocks: 683 , Erors: "+ temp  + ". If you want to save click save button."));
+				}else if(fileContent.length == 197376) {
+					int temp = 0;
+					for(int i=fileContent.length-768 ; i > fileContent.length ; i++) {
+						if(i > 196608) {
+							if(i < 196965) {
+								j++;
+								if((i-196608) % 21 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 196965){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 196965 && i < 197098){
+								j++;
+								if((i-196965) % 19 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 197098){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 197098 && i < 197206){
+								j++;
+								if((i-197098) % 18 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 197206){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 197206){
+								j++;
+								if((i-197206) % 17 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}
+						}else{
+							c.gridx = j;
+							c.gridy = k;
+							JLabel l = new JLabel(Integer.toString(k+1));
+							right.add(l, c);
+							j++;
+						}
+						c.gridx = j;
+						c.gridy = k;
+				        if(fileContent[i] == 1) {
+				        	BufferedImage myPicture = null;
+							try {
+								myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaZelena.png"));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+							Border blackline = BorderFactory.createLineBorder(Color.black);
+							picLabel.setBorder(blackline);
+							right.add(picLabel, c);
+				        }else {
+				        	temp++;
+				        	BufferedImage myPicture = null;
+							try {
+								myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaCrvena.png"));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+							Border blackline = BorderFactory.createLineBorder(Color.black);
+							picLabel.setBorder(blackline);
+							right.add(picLabel, c);
+				        }
+				        
+				    }
+					info.add(new JLabel("Fix is done! Blocks: 768 , Erors: "+ temp + ". If you want to save click save button." ));
+				}else if(fileContent.length == 174848){
+					for(int i=0 ; i < 683 ; i++) {
+						if(i > 20) {
+							if(i < 357) {
+								j++;
+								if(i % 21 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 357){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 357 && i < 490){
+								j++;
+								if((i-357) % 19 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 490){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 490 && i < 598){
+								j++;
+								if((i-490) % 18 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 598){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 598){
+								j++;
+								if((i-598) % 17 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}
+						}else{
+							c.gridx = j;
+							c.gridy = k;
+							JLabel l = new JLabel(Integer.toString(k+1));
+							right.add(l, c);
+							j++;
+						}
+						c.gridx = j;
+						c.gridy = k;
+						BufferedImage myPicture = null;
+						try {
+							myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaZelena.png"));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+						Border blackline = BorderFactory.createLineBorder(Color.black);
+						picLabel.setBorder(blackline);
+						right.add(picLabel, c);
+						
+					}
+					info.add(new JLabel(("Fix is done! Blocks: 683 , Erors: 0. If you want to save click save button.")));
+				}else if(fileContent.length == 196608){
+					for(int i=0 ; i < 768 ; i++) {
+						if(i > 20) {
+							if(i < 357) {
+								j++;
+								if(i % 21 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 357){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 357 && i < 490){
+								j++;
+								if((i-357) % 19 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 490){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 490 && i < 598){
+								j++;
+								if((i-490) % 18 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}else if(i == 598){
+								k++;
+								j=0;
+								c.gridx = j;
+								c.gridy = k;
+								JLabel l = new JLabel(Integer.toString(k+1));
+								right.add(l, c);
+								j++;
+							}else if(i > 598){
+								j++;
+								if((i-598) % 17 == 0) {
+									k++;
+									j=0;
+									c.gridx = j;
+									c.gridy = k;
+									JLabel l = new JLabel(Integer.toString(k+1));
+									right.add(l, c);
+									j++;
+								}
+							}
+						}else{
+							c.gridx = j;
+							c.gridy = k;
+							JLabel l = new JLabel(Integer.toString(k+1));
+							right.add(l, c);
+							j++;
+						}
+						c.gridx = j;
+						c.gridy = k;
+						BufferedImage myPicture = null;
+						try {
+							myPicture = ImageIO.read(new File("../JavaD64Fix/Img/KockaZelena.png"));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+						Border blackline = BorderFactory.createLineBorder(Color.black);
+						picLabel.setBorder(blackline);
+						right.add(picLabel, c);
+					}
+					info.add(new JLabel("Fix is done! Blocks: 768 , Erors: 0. If you want to save click save button."));
+				}			
+				info.updateUI();
+				info.repaint();
+				info.revalidate();
+				right.updateUI();
+				right.repaint();
+				right.revalidate();
+			}
+		}else {
+			info.removeAll();
+			info.add(new JLabel(Singleton.getInstance().getFiles().getInfo()));
+			info.updateUI();
+			info.repaint();
+			info.revalidate();
+			
+		}
+		
+		repaint();
+		revalidate();
+	}
+
+}

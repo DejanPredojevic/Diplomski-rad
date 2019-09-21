@@ -1,0 +1,53 @@
+package controller;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
+import util.Singleton;
+
+public class FileFix implements ActionListener {
+	/**
+	 * #35 traka ima 683 sektora sa po 256 byte u svakom
+	 * #40 traka ima 768 sektora sa po 256 byte u svakom
+	 * 
+	 * #35 traka , no eror -------> 174848 byte
+	 * #35 traka , 683 eror byte -> 175531 byte
+	 * 
+	 * #40 traka , no eror -------> 196608 byte
+	 * #40 traka , 768 eror byte -> 197376 byte
+	 * 
+	 */
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		/** 
+		 * 
+		 * 1.For kroz sve filove
+		 * 2.Izvuci byte[] u jednu listu
+		 * 3.Proveri dal su svi 35 traka ili 40 traca kombinacije ne mogu ...
+		 * 4.ako su svi isti idemo na algoritam
+		 * 5.Nadjem fajl sa najmanje gresaka
+		 * 6.Prekopiram taj u novi byte[] ...
+		 * 6.prodjem redom kroz greske i naidjem na prvu zapamtim koji sektor(blok ima gresku)
+		 * 7.Pogledam u ostalim fajlovima da li na tom sektoru ima greska ako nema taj sektor kopiram u noviSektor i prepravlja da je ta
+		 * 	 sektor sada ispravan
+		 * 8.Postupak nastaviti doo kraja fajla.
+		 * 9.Po zavrsetku sacuvati novo napravljeni ispravnjeni bute[] kao .d64 ....
+		 * 
+		 */
+		byte[] newFile = null;
+		for (File file : Singleton.getInstance().getCompare().getCompare()) {
+			byte[] fileContent = null;
+			try {
+				fileContent = Files.readAllBytes(file.toPath());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			Singleton.getInstance().getCompare().setFiles(fileContent);
+		}
+	}
+
+}

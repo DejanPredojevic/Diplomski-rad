@@ -1,0 +1,78 @@
+package controller;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
+
+public class FileChooser implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		//JFileChooser chooser = new JFileChooser();
+		jfc.setMultiSelectionEnabled(true);
+		FileFilter filter1 = new ExtensionFileFilter(".d64", new String[] { ".d64" });
+		
+		jfc.setFileFilter(filter1);
+		int returnValue = jfc.showOpenDialog(null);
+		// int returnValue = jfc.showSaveDialog(null);
+
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			File[] selectedFile = jfc.getSelectedFiles();
+			for(int i = 0; i < selectedFile.length;i++)
+				System.out.println(selectedFile[i].getAbsolutePath());
+		}
+	}
+
+}
+class ExtensionFileFilter extends FileFilter {
+	  String description;
+
+	  String extensions[];
+
+	  public ExtensionFileFilter(String description, String extension) {
+	    this(description, new String[] { extension });
+	  }
+
+	  public ExtensionFileFilter(String description, String extensions[]) {
+	    if (description == null) {
+	      this.description = extensions[0];
+	    } else {
+	      this.description = description;
+	    }
+	    this.extensions = (String[]) extensions.clone();
+	    toLower(this.extensions);
+	  }
+
+	  private void toLower(String array[]) {
+	    for (int i = 0, n = array.length; i < n; i++) {
+	      array[i] = array[i].toLowerCase();
+	    }
+	  }
+
+	  public String getDescription() {
+	    return description;
+	  }
+
+	  public boolean accept(File file) {
+	    if (file.isDirectory()) {
+	      return true;
+	    } else {
+	      String path = file.getAbsolutePath().toLowerCase();
+	      for (int i = 0, n = extensions.length; i < n; i++) {
+	        String extension = extensions[i];
+	        if ((path.endsWith(extension) && (path.charAt(path.length() - extension.length() - 1)) == '.')) {
+	          return true;
+	        }
+	      }
+	    }
+	    return false;
+	  }
+	}

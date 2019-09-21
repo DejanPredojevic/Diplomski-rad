@@ -1,0 +1,48 @@
+package util;
+
+import model.Files;
+import view.MainFrame;
+
+public class Singlton 
+{ 
+    // static variable single_instance of type Singleton 
+    private static Singlton single_instance = null; 
+  
+    // variable of type String 
+    MainFrame frame;
+    Files files;
+  
+    // private constructor restricted to this class itself 
+    private Singlton() 
+    {
+    	frame = new MainFrame();
+    	files = new Files();
+    } 
+  
+    // static method to create instance of Singleton class 
+    public static Singlton getInstance() 
+    { 
+        if (single_instance == null) 
+            single_instance = new Singlton(); 
+  
+        return single_instance; 
+    }
+
+	public MainFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(MainFrame frame) {
+		this.frame = frame;
+	}
+
+	public Files getFiles() {
+		return files;
+	}
+
+	public void setFiles(Files files) {
+		this.files = files;
+	} 
+    
+    
+} 

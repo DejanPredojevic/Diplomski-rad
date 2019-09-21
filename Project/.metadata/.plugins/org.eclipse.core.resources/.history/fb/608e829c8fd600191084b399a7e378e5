@@ -1,0 +1,28 @@
+package controller;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
+
+public class FileChooser implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		//JFileChooser chooser = new JFileChooser();
+		jfc.setMultiSelectionEnabled(true);
+		
+		int returnValue = jfc.showOpenDialog(null);
+		// int returnValue = jfc.showSaveDialog(null);
+		
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			File[] selectedFile = jfc.getSelectedFiles();
+			Singleton.getInstance().getFiles().setFiles(jfc.getSelectedFiles());
+		}
+	}
+
+}
