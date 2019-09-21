@@ -1,0 +1,67 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[serbian]{babel}
+\usepackage{url}
+\usepackage{etoolbox}
+\usepackage{fancyhdr}
+\usepackage{nameref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{comment}
+
+
+\pagestyle{fancy}
+
+\graphicspath{ {images/} }
+
+\makeatletter
+\renewcommand{\thesection}{
+  \ifnum\c@chapter<1 \@arabic\c@section
+  \else \thechapter.\@arabic\c@section
+  \fi
+}
+\newcommand*{\currentname}{\@currentlabelname}
+\makeatother
+
+\patchcmd{\thebibliography}{\chapter*}{\section*}{}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\rightmark}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+
+\pagenumbering{roman}
+
+\include{title}
+
+%TODO Ubaciti one dve strane za biblioteku
+
+\include{zahvalnost}
+
+\renewcommand*\listfigurename{Lista slika}
+\tableofcontents
+\clearpage
+
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+\clearpage
+
+\renewcommand*\listtablename{Lista tabela}
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+
+
+\clearpage
+\pagenumbering{arabic}
+\include{uvod}
+
+\include{zakljucak}
+\include{literatura}
+
+\end{document}
