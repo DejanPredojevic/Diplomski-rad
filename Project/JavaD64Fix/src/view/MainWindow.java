@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -58,10 +59,10 @@ public class MainWindow extends JFrame implements java.util.Observer{
 	public MainWindow() {
 		//main window podesavanja
 		setTitle("JavaD64Fix v1.1.1");
-		setMinimumSize(new Dimension(650,750));
+		setMinimumSize(new Dimension(650,500));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		//setResizable(false);
+		setResizable(false);
 		
 		//Levi panel(dugmad i pregled fajlova)
 		left = LeftPanel();
@@ -144,9 +145,9 @@ public class MainWindow extends JFrame implements java.util.Observer{
 		pregled = new JPanel();
 		pregled.setLayout(new BoxLayout(pregled, BoxLayout.Y_AXIS));
 		pregled.setSize(new Dimension());
-		pregled.setMaximumSize(new Dimension(225,500));
-		pregled.setMinimumSize(new Dimension(225,500));
-		pregled.setPreferredSize(new Dimension(225,500));
+		pregled.setMaximumSize(new Dimension(225,250));
+		pregled.setMinimumSize(new Dimension(225,250));
+		pregled.setPreferredSize(new Dimension(225,250));
 		
 		JPanel label = new JPanel();
 		label.setMaximumSize(new Dimension(225,35));
@@ -173,17 +174,16 @@ public class MainWindow extends JFrame implements java.util.Observer{
 		pregled.add(label);
 		fajls = new JPanel();
 		fajls.setLayout(new BoxLayout(fajls, BoxLayout.Y_AXIS));
-		fajls.setPreferredSize(new Dimension(225,450));
-		/*JScrollPane p = new JScrollPane();
+		JScrollPane p = new JScrollPane();
 		p.setViewportView(fajls);
 		p.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		p.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		p.setWheelScrollingEnabled(true);
-		p.setPreferredSize(new Dimension(220,450));
-		p.setMinimumSize(new Dimension(220,450));
-		p.setPreferredSize(new Dimension(220,450));
-		p.setBorder(null);*/
-		pregled.add(fajls);
+		p.setPreferredSize(new Dimension(220,150));
+		p.setMinimumSize(new Dimension(220,150));
+		p.setPreferredSize(new Dimension(220,150));
+		p.setBorder(null);
+		pregled.add(p);
 		left.add(pregled);
 		
 		left.setVisible(true);
@@ -199,80 +199,80 @@ public class MainWindow extends JFrame implements java.util.Observer{
 		for(int i=0 ; i < 683 ; i++) {
 			if(i > 20) {
 				if(i < 357) {
-					j++;
+					k++;
 					if(i % 21 == 0) {
-						k++;
-						j=0;
+						k=0;
+						j++;
 						c.gridx = j;
 						c.gridy = k;
-						JLabel l = new JLabel(Integer.toString(k+1));
+						JLabel l = new JLabel(Integer.toString(j+1));
 						right.add(l, c);
-						j++;
+						k++;
 					}
 				}else if(i == 357){
-					k++;
-					j=0;
+					k=0;
+					j++;
 					c.gridx = j;
 					c.gridy = k;
-					JLabel l = new JLabel(Integer.toString(k+1));
+					JLabel l = new JLabel(Integer.toString(j+1));
 					right.add(l, c);
-					j++;
+					k++;
 				}else if(i > 357 && i < 490){
-					j++;
+					k++;
 					if((i-357) % 19 == 0) {
-						k++;
-						j=0;
+						k=0;
+						j++;
 						c.gridx = j;
 						c.gridy = k;
-						JLabel l = new JLabel(Integer.toString(k+1));
+						JLabel l = new JLabel(Integer.toString(j+1));
 						right.add(l, c);
-						j++;
+						k++;
 					}
 				}else if(i == 490){
-					k++;
-					j=0;
+					k=0;
+					j++;
 					c.gridx = j;
 					c.gridy = k;
-					JLabel l = new JLabel(Integer.toString(k+1));
+					JLabel l = new JLabel(Integer.toString(j+1));
 					right.add(l, c);
-					j++;
+					k++;
 				}else if(i > 490 && i < 598){
-					j++;
+					k++;
 					if((i-490) % 18 == 0) {
-						k++;
-						j=0;
+						k=0;
+						j++;
 						c.gridx = j;
 						c.gridy = k;
-						JLabel l = new JLabel(Integer.toString(k+1));
+						JLabel l = new JLabel(Integer.toString(j+1));
 						right.add(l, c);
-						j++;
+						k++;
 					}
 				}else if(i == 598){
-					k++;
-					j=0;
+					k=0;
+					j++;
 					c.gridx = j;
 					c.gridy = k;
-					JLabel l = new JLabel(Integer.toString(k+1));
+					JLabel l = new JLabel(Integer.toString(j+1));
 					right.add(l, c);
-					j++;
+					k++;
 				}else if(i > 598){
-					j++;
+					k++;
 					if((i-598) % 17 == 0) {
-						k++;
-						j=0;
+						k=0;
+						j++;
 						c.gridx = j;
 						c.gridy = k;
-						JLabel l = new JLabel(Integer.toString(k+1));
+						JLabel l = new JLabel(Integer.toString(j+1));
 						right.add(l, c);
-						j++;
+						k++;
 					}
 				}
 			}else{
 				c.gridx = j;
 				c.gridy = k;
-				JLabel l = new JLabel(Integer.toString(k+1));
+				JLabel l = new JLabel(Integer.toString(j+1));
 				right.add(l, c);
-				j++;
+				k++;
 			}
 			c.gridx = j;
 			c.gridy = k;
@@ -353,80 +353,80 @@ public class MainWindow extends JFrame implements java.util.Observer{
 					for(int i=fileContent.length-683 ; i < fileContent.length ; i++) {
 						if(i > 174848) {
 							if(i < 175205) {
-								j++;
+								k++;
 								if((i-174848) % 21 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 175205){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 175205 && i < 175338){
-								j++;
+								k++;
 								if((i-175205) % 19 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 175338){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 175338 && i < 175446){
-								j++;
+								k++;
 								if((i-175338) % 18 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 175446){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 175446){
-								j++;
+								k++;
 								if((i-175446) % 17 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}
 						}else{
 							c.gridx = j;
 							c.gridy = k;
-							JLabel l = new JLabel(Integer.toString(k+1));
+							JLabel l = new JLabel(Integer.toString(j+1));
 							right.add(l, c);
-							j++;
+							k++;
 						}
 						c.gridx = j;
 						c.gridy = k;
@@ -466,72 +466,72 @@ public class MainWindow extends JFrame implements java.util.Observer{
 					for(int i=fileContent.length-768 ; i > fileContent.length ; i++) {
 						if(i > 196608) {
 							if(i < 196965) {
-								j++;
+								k++;
 								if((i-196608) % 21 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 196965){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 196965 && i < 197098){
-								j++;
+								k++;
 								if((i-196965) % 19 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 197098){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 197098 && i < 197206){
-								j++;
+								k++;
 								if((i-197098) % 18 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 197206){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 197206){
 								j++;
 								if((i-197206) % 17 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}
 						}else{
@@ -539,7 +539,7 @@ public class MainWindow extends JFrame implements java.util.Observer{
 							c.gridy = k;
 							JLabel l = new JLabel(Integer.toString(k+1));
 							right.add(l, c);
-							j++;
+							k++;
 						}
 						c.gridx = j;
 						c.gridy = k;
@@ -576,80 +576,80 @@ public class MainWindow extends JFrame implements java.util.Observer{
 					for(int i=0 ; i < 683 ; i++) {
 						if(i > 20) {
 							if(i < 357) {
-								j++;
+								k++;
 								if(i % 21 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 357){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 357 && i < 490){
-								j++;
+								k++;
 								if((i-357) % 19 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 490){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 490 && i < 598){
-								j++;
+								k++;
 								if((i-490) % 18 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 598){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 598){
-								j++;
+								k++;
 								if((i-598) % 17 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}
 						}else{
 							c.gridx = j;
 							c.gridy = k;
-							JLabel l = new JLabel(Integer.toString(k+1));
+							JLabel l = new JLabel(Integer.toString(j+1));
 							right.add(l, c);
-							j++;
+							k++;
 						}
 						c.gridx = j;
 						c.gridy = k;
@@ -671,72 +671,72 @@ public class MainWindow extends JFrame implements java.util.Observer{
 					for(int i=0 ; i < 768 ; i++) {
 						if(i > 20) {
 							if(i < 357) {
-								j++;
+								k++;
 								if(i % 21 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 357){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 357 && i < 490){
-								j++;
+								k++;
 								if((i-357) % 19 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 490){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 490 && i < 598){
-								j++;
+								k++;
 								if((i-490) % 18 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 598){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 598){
-								j++;
+								k++;
 								if((i-598) % 17 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}
 						}else{
@@ -744,7 +744,7 @@ public class MainWindow extends JFrame implements java.util.Observer{
 							c.gridy = k;
 							JLabel l = new JLabel(Integer.toString(k+1));
 							right.add(l, c);
-							j++;
+							k++;
 						}
 						c.gridx = j;
 						c.gridy = k;
@@ -780,80 +780,80 @@ public class MainWindow extends JFrame implements java.util.Observer{
 				for(int i=0 ; i < 683 ; i++) {
 					if(i > 20) {
 						if(i < 357) {
-							j++;
+							k++;
 							if(i % 21 == 0) {
-								k++;
-								j=0;
+								k=0;
+								j++;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}
 						}else if(i == 357){
-							k++;
-							j=0;
+							k=0;
+							j++;
 							c.gridx = j;
 							c.gridy = k;
-							JLabel l = new JLabel(Integer.toString(k+1));
+							JLabel l = new JLabel(Integer.toString(j+1));
 							right.add(l, c);
-							j++;
+							k++;
 						}else if(i > 357 && i < 490){
-							j++;
+							k++;
 							if((i-357) % 19 == 0) {
-								k++;
-								j=0;
+								k=0;
+								j++;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}
 						}else if(i == 490){
-							k++;
-							j=0;
+							k=0;
+							j++;
 							c.gridx = j;
 							c.gridy = k;
-							JLabel l = new JLabel(Integer.toString(k+1));
+							JLabel l = new JLabel(Integer.toString(j+1));
 							right.add(l, c);
-							j++;
+							k++;
 						}else if(i > 490 && i < 598){
-							j++;
+							k++;
 							if((i-490) % 18 == 0) {
-								k++;
-								j=0;
+								k=0;
+								j++;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}
 						}else if(i == 598){
-							k++;
-							j=0;
+							k=0;
+							j++;
 							c.gridx = j;
 							c.gridy = k;
-							JLabel l = new JLabel(Integer.toString(k+1));
+							JLabel l = new JLabel(Integer.toString(j+1));
 							right.add(l, c);
-							j++;
+							k++;
 						}else if(i > 598){
-							j++;
+							k++;
 							if((i-598) % 17 == 0) {
-								k++;
-								j=0;
+								k=0;
+								j++;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}
 						}
 					}else{
 						c.gridx = j;
 						c.gridy = k;
-						JLabel l = new JLabel(Integer.toString(k+1));
+						JLabel l = new JLabel(Integer.toString(j+1));
 						right.add(l, c);
-						j++;
+						k++;
 					}
 					c.gridx = j;
 					c.gridy = k;
@@ -867,9 +867,11 @@ public class MainWindow extends JFrame implements java.util.Observer{
 					JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 					Border blackline = BorderFactory.createLineBorder(Color.black);
 					picLabel.setBorder(blackline);
+					
 					right.add(picLabel, c);
 					
 				}
+				info.add(new JLabel("Welcome to JavaD64Fix."));
 			}else {
 				GridBagLayout gridBag = new GridBagLayout();
 				GridBagConstraints c = new GridBagConstraints();
@@ -881,80 +883,80 @@ public class MainWindow extends JFrame implements java.util.Observer{
 					for(int i=fileContent.length-683 ; i < fileContent.length ; i++) {
 						if(i > 174848) {
 							if(i < 175205) {
-								j++;
+								k++;
 								if((i-174848) % 21 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 175205){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 175205 && i < 175338){
-								j++;
+								k++;
 								if((i-175205) % 19 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 175338){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 175338 && i < 175446){
-								j++;
+								k++;
 								if((i-175338) % 18 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 175446){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 175446){
-								j++;
+								k++;
 								if((i-175446) % 17 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}
 						}else{
 							c.gridx = j;
 							c.gridy = k;
-							JLabel l = new JLabel(Integer.toString(k+1));
+							JLabel l = new JLabel(Integer.toString(j+1));
 							right.add(l, c);
-							j++;
+							k++;
 						}
 						c.gridx = j;
 						c.gridy = k;
@@ -994,72 +996,72 @@ public class MainWindow extends JFrame implements java.util.Observer{
 					for(int i=fileContent.length-768 ; i > fileContent.length ; i++) {
 						if(i > 196608) {
 							if(i < 196965) {
-								j++;
+								k++;
 								if((i-196608) % 21 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 196965){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 196965 && i < 197098){
-								j++;
+								k++;
 								if((i-196965) % 19 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 197098){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 197098 && i < 197206){
-								j++;
+								k++;
 								if((i-197098) % 18 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 197206){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 197206){
 								j++;
 								if((i-197206) % 17 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}
 						}else{
@@ -1067,7 +1069,7 @@ public class MainWindow extends JFrame implements java.util.Observer{
 							c.gridy = k;
 							JLabel l = new JLabel(Integer.toString(k+1));
 							right.add(l, c);
-							j++;
+							k++;
 						}
 						c.gridx = j;
 						c.gridy = k;
@@ -1104,80 +1106,80 @@ public class MainWindow extends JFrame implements java.util.Observer{
 					for(int i=0 ; i < 683 ; i++) {
 						if(i > 20) {
 							if(i < 357) {
-								j++;
+								k++;
 								if(i % 21 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 357){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 357 && i < 490){
-								j++;
+								k++;
 								if((i-357) % 19 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 490){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 490 && i < 598){
-								j++;
+								k++;
 								if((i-490) % 18 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 598){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
-								JLabel l = new JLabel(Integer.toString(k+1));
+								JLabel l = new JLabel(Integer.toString(j+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 598){
-								j++;
+								k++;
 								if((i-598) % 17 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
-									JLabel l = new JLabel(Integer.toString(k+1));
+									JLabel l = new JLabel(Integer.toString(j+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}
 						}else{
 							c.gridx = j;
 							c.gridy = k;
-							JLabel l = new JLabel(Integer.toString(k+1));
+							JLabel l = new JLabel(Integer.toString(j+1));
 							right.add(l, c);
-							j++;
+							k++;
 						}
 						c.gridx = j;
 						c.gridy = k;
@@ -1199,72 +1201,72 @@ public class MainWindow extends JFrame implements java.util.Observer{
 					for(int i=0 ; i < 768 ; i++) {
 						if(i > 20) {
 							if(i < 357) {
-								j++;
+								k++;
 								if(i % 21 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 357){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 357 && i < 490){
-								j++;
+								k++;
 								if((i-357) % 19 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 490){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 490 && i < 598){
-								j++;
+								k++;
 								if((i-490) % 18 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}else if(i == 598){
-								k++;
-								j=0;
+								j++;
+								k=0;
 								c.gridx = j;
 								c.gridy = k;
 								JLabel l = new JLabel(Integer.toString(k+1));
 								right.add(l, c);
-								j++;
+								k++;
 							}else if(i > 598){
-								j++;
+								k++;
 								if((i-598) % 17 == 0) {
-									k++;
-									j=0;
+									j++;
+									k=0;
 									c.gridx = j;
 									c.gridy = k;
 									JLabel l = new JLabel(Integer.toString(k+1));
 									right.add(l, c);
-									j++;
+									k++;
 								}
 							}
 						}else{
@@ -1272,7 +1274,7 @@ public class MainWindow extends JFrame implements java.util.Observer{
 							c.gridy = k;
 							JLabel l = new JLabel(Integer.toString(k+1));
 							right.add(l, c);
-							j++;
+							k++;
 						}
 						c.gridx = j;
 						c.gridy = k;
