@@ -72,7 +72,7 @@ public class FileFix implements ActionListener {
 						best = temp;
 						newFile = fileContent;
 					}
-				}else if(fileContent.length == 196608 || fileContent.length == 174848){
+				}else{
 					newFile = fileContent;
 					best = -1;
 				}	
