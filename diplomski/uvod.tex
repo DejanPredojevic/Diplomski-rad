@@ -1,7 +1,7 @@
 \section{Uvod}
 
-\subsection{\textit{Commodore 1541},\textit{5.25" flopi disketa} i \textit{D64 fajl}}
-\textit{Commodore 1541} je čitač \textit{5.25" flopi disketa} korićenih u radu sa \textit{Commodore 64} računarima. Razvijen je u Kanadi od strane kompanije \textit{Commodore}, 1982. godine. Ovaj čitač imao je jednu glavu za čitanje i pisanje a sa \textit{Commodore 64} računarom bio je povezan preko \textit{serial bus-a}. Imao je dve lapmpice, zelenu koja je označavala da je uređaj uključen u struju i crvenu koja se palila kada uređaj radi \cite{Commodore1541Text}. Izgled čitača prikazan je na slici \ref{img:commodore1541}.
+\subsection{\textit{Commodore 1541}, \textit{5.25" flopi disketa} i \textit{D64 fajl}}
+\textit{Commodore 1541} je čitač \textit{5.25" flopi disketa} korićenih u radu sa \textit{Commodore 64} računarima. Razvijen je u Kanadi od strane kompanije \textit{Commodore}, 1982. godine. Ovaj čitač imao je jednu glavu za čitanje i pisanje sa \textit{Commodore 64} računarom i bio je povezan sa njim preko \textit{serial bus-a}. Imao je dve lapmpice, zelenu koja je označavala da je uređaj uključen u struju i crvenu koja se palila kada uređaj radi \cite{Commodore1541Text}. Izgled čitača prikazan je na slici \ref{img:commodore1541}.
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[width=\textwidth]{img/Commodore1541.jpg}
@@ -43,7 +43,7 @@ Traka & Sektori/traka & Ukupno Sektora & Skladište u bajtima \\
 \label{tab:sektor_traka}
 \end{table}
 
-Traka 18 predstavlja glavnu traku sa svojih 19 sektora. Nulti sektor ove trake čuva BAM(Block Availability Map) i ime flopi diskete dok ostali sektori sadrže podatke. BAM je struktura podataka koja prati koji sektori traka su slobodni a koji zauzeti. Sektor u kome je smesten BAM je formiran po posebnom šablonu. BAM za prvu traku smešten je od 4-7 bajta nultog sektora. Prvi bajt govori ukupan broj slobodnih sektora, dok preostala tri govore koji sektori su slobodni a koji popunjeni. Svaka naredna 4 bajta predstavljaju BAM za narednu traku flopi diskete. 128 bajt čuva ime flopi diskete.
+Traka 18 predstavlja glavnu traku sa svojih 19 sektora. Nulti sektor ove trake čuva \textbf{BAM}(eng. Block Availability Map), ime i id flopi diskete dok ostali sektori sadrže podatke. \textbf{BAM} je struktura podataka koja prati koji sektori traka su slobodni a koji zauzeti. Sektor u kome je smesten \textbf{BAM} je formiran po posebnom šablonu. \textbf{BAM} za prvu traku smešten je od 4-7 bajta nultog sektora. Prvi bajt \textbf{BAM-a} govori ukupan broj slobodnih sektora, dok preostala tri govore koji sektori su slobodni a koji popunjeni. Svaka naredna 4 bajta predstavljaju \textbf{BAM} za narednu traku flopi diskete. 128 bajt čuva ime flopi diskete dok 146 bajt čuva id diskete.
 
 Podaci su uvek smešteni počevši od 1 sektora, ukoliko je reč o direktorijumima pomeranje se vrši za 3 sektora pa je nastavak na 4 sektoru dok se za smeštanje fajlova pomeranje vrši za 10 sektora i tada je nastavak na 10-tom sektoru. Sektori su popunjeni po šablonu, prva dva bajta sektora govore o lokaciji sledece trake/sektora. Kada dođemo do kraja direktorijuma vrednost prvog bajta je 00.
 
