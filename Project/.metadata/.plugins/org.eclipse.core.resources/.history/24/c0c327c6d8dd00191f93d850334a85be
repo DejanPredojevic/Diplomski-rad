@@ -32,7 +32,6 @@ public class FileSave implements ActionListener{
 			 
 			if (userSelection == JFileChooser.APPROVE_OPTION) {
 			    File fileToSave = fileChooser.getSelectedFile();
-			    temp = fileToSave.getParentFile().toString();
 			    try (FileOutputStream stream = new FileOutputStream(fileToSave.getPath())) {
 				    try {
 				    	if(Singleton.getInstance().getFiles().getNewFile() != null)

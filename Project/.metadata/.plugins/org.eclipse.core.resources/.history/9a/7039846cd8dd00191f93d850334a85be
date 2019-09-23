@@ -35,7 +35,12 @@ public class FileChooser implements ActionListener {
 		
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFile = jfc.getSelectedFiles();
-			temp = selectedFile[0].getParentFile().toString();
+		    try {
+				System.out.println(selectedFile[0].getCanonicalPath());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			File[] oldFiles = Singleton.getInstance().getFiles().getFiles();
 			File[] newFiles = null;
 			if(oldFiles != null) {

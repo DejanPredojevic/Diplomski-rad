@@ -13,8 +13,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import util.Singleton;
 
 public class FileSave implements ActionListener{
-	
-	String temp = "";
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -23,16 +21,13 @@ public class FileSave implements ActionListener{
 			JFileChooser fileChooser = new JFileChooser();
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(".d64", "d64");
 			fileChooser.setFileFilter(filter);
-			if(!temp.equals("")) {
-				File dir = new File(temp);
-				fileChooser.setCurrentDirectory(dir);
-			}
+			File dir = new File("C:\\Users\\Dejan\\Desktop\\D64FILES");
+			fileChooser.setCurrentDirectory(dir);
 			fileChooser.setDialogTitle("Specify a file to save");   
 			int userSelection = fileChooser.showSaveDialog(null);
 			 
 			if (userSelection == JFileChooser.APPROVE_OPTION) {
 			    File fileToSave = fileChooser.getSelectedFile();
-			    temp = fileToSave.getParentFile().toString();
 			    try (FileOutputStream stream = new FileOutputStream(fileToSave.getPath())) {
 				    try {
 				    	if(Singleton.getInstance().getFiles().getNewFile() != null)
